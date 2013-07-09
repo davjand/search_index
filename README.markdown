@@ -5,6 +5,18 @@
 * Build Date: 2011-07-08
 * Requirements: Symphony 2.2
 
+
+## MODIFICATIONS MADE BY DAVID ANDERSON
+
+I had issues with the search_index when using very large tables (20,000 entries) due to
+ - The deleting code for entries isn't optimized (as the indexing code) is, so trying to delete 20,000 indexes and associated keywords was causing php timeout errors
+
+*The fix is two fold*
+
+1. Add a 'delete all' option which purges all search related data (aparts from logs). This is very crude (truncate tables) in order to reduced the php load
+2. Add a 'index only' option which indexes a table without attempting to delete the index first. This should only be used on an empty table or the data will become corrupted.
+
+
 ## Description
 Search Index provides an easy way to implement high performance fulltext searching on your Symphony site. By setting filters for each Section in your site you control which entries are indexed and therefore searchable. Frontend search can be implemented either using the Search Index field that allows keyword filtering in data sources, or the included Search Index data source for searching multiple sections at once.
 

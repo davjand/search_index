@@ -72,7 +72,12 @@
 						}						
 						redirect("{$this->_uri}/indexes/");
 						break;
-						
+					case 'empty':
+						SearchIndex::deleteEntireIndex();
+						break;
+					case 'index':
+						redirect("{$this->_uri}/indexes/?indexOnly=1&section=" . join(',', $checked));
+						break;
 					case 're-index':
 						foreach ($checked as $section_id) {
 							#SearchIndex::deleteIndexBySection($section_id);
@@ -320,7 +325,10 @@
 					$count_class = null;
 					
 					if (isset($_GET['section']) && in_array($section->get('id'), $re_index) && in_array($section->get('id'), array_keys($this->_indexes))) {
-						SearchIndex::deleteIndexBySection($section->get('id'));
+						
+						if($_GET['indexOnly'] !== '1'){
+							SearchIndex::deleteIndexBySection($section->get('id'));
+						}
 						$count_data = '<span class="to-re-index" id="section-'.$section->get('id').'">' . __('Waiting to re-index...') . '</span>';
 					}
 					else if (isset($this->_indexes[$section->get('id')])) {
@@ -359,7 +367,9 @@
 			$options = array(
 				array(null, false, __('With Selected...')),
 				array('re-index', false, __('Re-index Entries')),
+				array('index', false, __('Index Entries (must be empty)')),
 				array('delete', false, __('Delete')),
+				array('empty', false, __('Delete All')),
 			);
 			
 			$actions->appendChild(Widget::Apply($options));
