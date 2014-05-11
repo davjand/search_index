@@ -305,6 +305,13 @@ Class SearchIndex {
 		);
 	}
 	
+	
+	public function deleteEntireIndex(){
+		Symphony::Database()->query('TRUNCATE TABLE `tbl_search_index`');
+		Symphony::Database()->query('TRUNCATE TABLE `tbl_search_index_entry_keywords`');
+		Symphony::Database()->query('TRUNCATE TABLE `sym_search_index_keywords`');
+	}
+	
 	/**
 	* Pre-manipulation of search string
 	* 1. Make all words required by prefixing with + (if no +/- already prefixed)
